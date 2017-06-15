@@ -1,0 +1,110 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>Document</title>
+</head>
+<body>
+	<script type="text/javascript">
+
+		var numOfCars = 10;
+		var numOfSpots = 3;
+		var emptySpot = null;
+
+		// cars
+		var arrCars = [];
+		var Car = function(Status, Id, SpotID) {
+			 this.Status = Status; //waiting, parked, gone
+			 this.ParkDuration= Math.round(Math.random() * 5000);
+			 this.Id = Id;
+			 this.timeoutID;
+			 this.SpotID = SpotID;
+			 this.Park = function () {
+			 	timeoutID = window.setTimeout(this.unPark, this.ParkDuration, this.Id, this.SpotID);
+			 	Car.Status = 'parked';
+			 	console.log('Park funct: Car '+ this.Id + ' is parked in Spot: '+this.SpotID+' and timer set for '+this.ParkDuration);
+			 }
+			 this.unPark = function (id,spotid) {
+			 	arrCars[id].Status = 'gone';
+			 	console.log('-----------------car '+id+ ' is '+arrCars[id].Status+'!---------------');
+			 	arrSpots[spotid].Empty = true;
+			 	console.log('SPOT '+spotid+ ' is empty!');
+			 	arrCars[id].SpotID = null;
+			 }
+		} 
+
+		for (i=0;i < numOfCars;i++) {
+			arrCars.push(new Car('waiting', i ));
+		}
+		
+
+		// spots
+		var arrSpots = [];
+		var Spot = function(Empty, Id, CarID) {
+			this.Empty = Empty;
+			this.Id = Id;
+			this.CarID = null;
+		}
+		for (i=0; i < numOfSpots;i++) {
+			arrSpots.push(new Spot(true, i ));
+		}
+		
+
+		function fnCheckforEmptySpots() {
+			console.log('checking for empty spots');
+			for (i in arrSpots) {
+				// console.log('fnCheckforEmptySpots empty ' +arrSpots[i].Empty);
+				switch (arrSpots[i].Empty) {
+					case true:
+						console.log('Spot: '+ i + ' is empty')
+						emptySpot = i;
+						fnParkaCar(i);
+						break;
+					case false:
+						console.log('Spot: '+ i + ' is full with car ' + arrSpots[i].CarID);
+						break;
+				}
+			}
+		}
+
+		function fnParkaCar(spotid) {
+			var localSpot = arrSpots[spotid];
+			carloop:
+			for (i in arrCars) {
+				console.log('fnParkaCar car '+i+' is '+arrCars[i].Status);
+				switch (arrCars[i].Status) {
+					case 'waiting':
+						var localCar = arrCars[i];
+						localCar.SpotID=spotid;
+						localCar.Park();
+						localCar.Status='parked'
+						localSpot.Empty = false;
+						localSpot.CarID=i;
+						break carloop;
+					 default:
+						break;
+				
+				}
+				
+				if (i == arrCars.length-1) {
+					console.log('done');
+					console.dir(arrCars);
+					console.dir(arrSpots);	
+					clearInterval(checkit);
+		
+				}
+			}	
+
+		}
+
+		
+
+		console.log('start');
+		var checkit = setInterval(fnCheckforEmptySpots,500);
+		console.dir(arrCars);
+		console.dir(arrSpots);				
+
+		 
+	</script>
+</body>
+</html>
