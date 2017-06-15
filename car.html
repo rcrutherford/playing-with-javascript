@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>Document</title>
+</head>
+<body>
+	<script type="text/javascript">
+		var Car = function(make, model, year) { 
+			this.running = false; 
+			this.start = function() { 
+				switch(this.running){
+					case true:
+						console.log('already running -- HORRIBLE GRINDING SOUND!!!!'); 
+					break;
+					case false:
+						this.running = true; 
+					console.log('car started');
+					break;
+				}
+
+				// if(this.running) { 
+				// 	console.log('already running -- HORRIBLE GRINDING SOUND!!!!'); 
+				// } 
+				// else { 
+				// 	this.running = true; 
+				// 	console.log('car started');
+				// } 
+			}
+			this.stop = function() {
+				switch(this.running) {
+					case true:
+						this.running = false;
+						console.log('car stopped');
+					break;
+					case false:
+						console.log('nothing happens!');
+					break;
+
+				}
+
+				// if(this.running) { 
+				// 	this.running = false;
+				// 	console.log('car stopped'); 
+				// } 
+				// else { 
+				// 	console.log('nothing happens!');
+				// } 
+			}
+		};
+		var car = new Car('chevy','Silverado',2001);
+		car.stop();
+		car.start();
+		car.start();
+		car.stop();
+		car.stop();
+	</script>
+</body>
+</html>

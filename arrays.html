@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>Document</title>
+	
+</head>
+<body>
+	<script>
+		
+		var calc = prompt('Enter Calculation:', '5 * 2');
+		var items = calc.split('');
+		var validchars = ['+','-','*','/','0','1','2','3','4','5','6','7','8','9',' '];
+		var result = 0;
+		var error = false;
+		for (i=0;i<items.length;i++) {
+			if (validchars.indexOf(items[i]) >=0 ) {
+					// error = false;
+			}
+			else {
+					error = true;
+					alert(items[i] + ' is an invalid character!!!');
+			}
+		}
+		if (error != true) {
+			alert('result = ' + eval(calc));	
+		}
+		
+	
+	</script>
+</body>
+</html>

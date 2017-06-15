@@ -1,0 +1,106 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>Document</title>
+</head>
+<body>
+	<script type="text/javascript">
+
+		var allCarsGone = false;
+		var keepChecking = true;
+		var numOfCars = 10;
+		var numOfSpots = 3;
+
+		// cars
+		var arrCars = [];
+		var Car = function(Status, ParkDuration, Id, SpotID) {
+			 this.Status = Status; //waiting, parked, gone
+			 this.ParkDuration= ParkDuration;
+			 this.Id = Id;
+			 this.timeoutID;
+			 this.SpotID = SpotID;
+			 this.Park = function () {
+			 	timeoutID = window.setTimeout(this.unPark, this.ParkDuration, this.Id, this.SpotID);
+			 }
+			 this.unPark = function (id,spotid) {
+			 	this.Status = 'gone';
+			 	console.log('car '+id+ ' is gone!');
+			 	arrSpots[spotid].Empty=true;
+			 	console.log('SPOT '+spotid+ ' is empty!');
+			 }
+
+
+		} 
+		for (i=0;i < numOfCars;i++) {
+			arrCars.push(new Car('waiting',Math.round(Math.random() * 5000), i ));
+		}
+		// spots
+		var arrSpots = [];
+		var Spot = function(Empty, Id, CarID) {
+			this.Empty = Empty;
+			this.Id = Id;
+			this.CarID = null;
+		}
+		for (i=0; i < numOfSpots;i++) {
+			arrSpots.push(new Spot(true, i ));
+		}
+
+		function fnCheckforEmptySpots() {
+			console.log('checking for empty spots');
+			for (i in arrSpots) {
+				if (arrSpots[i].Empty == true) {
+					console.log('Spot: '+ i + ' is empty')
+					arrSpots[i].CarID = fnGetACar(i);
+					if (arrSpots[i].CarID == -1) {
+						keepChecking=false;
+						console.log('keepChecking: ' + keepChecking);
+					}
+					console.log('spot '+i+' .carid = ' + arrSpots[i].CarID);
+					arrSpots[i].Empty = false;
+					arrCars[arrSpots[i].CarID].Park();
+				}
+				
+			}
+		}
+		function fnGetACar (spotid) {
+			for (i in arrCars) {
+				if (arrCars[i].Status == 'waiting') {
+					arrCars[i].Status = 'parked';
+					arrCars[i].SpotID = spotid;
+					console.log('car '+ arrCars[i].Id + ' is ' + arrCars[i].Status);
+					return arrCars[i].Id;
+					break;
+				}
+				console.log(i + ' '+ arrCars.length);
+				if (i == arrCars.length-1) {
+					console.log('done');
+					clearInterval(checkit);
+				}
+			}	
+
+		}
+
+	
+		function myFunction() {
+			console.log(new Date().toLocaleTimeString()) ;
+		}
+		console.log('start');
+		var checkit = setInterval(fnCheckforEmptySpots(),500);
+		// var z = 0;
+		// while (keepChecking == true) {	
+		// 	z++;
+		// 	setInterval(myFunction(),1000);
+		// 	if (z > 10) {	
+		// 		clearInterval(checkit);
+		// 		myFunction();
+		// 		break;
+		// 	}
+		// }
+		
+
+		// console.dir(arrCars);
+		// console.dir(arrSpots);
+	</script>
+</body>
+</html>

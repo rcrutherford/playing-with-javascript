@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>Document</title>
+</head>
+<body>
+	<script type="text/javascript">
+		// var tiemoutID;
+		// function delayedHonk() {
+		// 	tiemoutID = window.setTimeout(honk,1000);
+		// }
+		// function honk() {
+		// 	console.log('beep...beep '+ new Date().toLocaleTimeString() );
+		// }
+		// function clearDelayedHonk() {
+		// 	window.clearTimeout(tiemoutID);
+		// }
+		// delayedHonk();
+		// clearDelayedHonk();
+
+
+		var tiemoutID;
+		var i = 0;
+		function delayedHonk() {
+			tiemoutID = window.setInterval(honk,1000);
+		}
+		function honk() {
+			console.log('beep...beep '+ new Date().toLocaleTimeString() + ' ' + i
+			);
+			i++;
+			if (i==5) {
+				clearDelayedHonk();
+			}
+		}
+		function clearDelayedHonk() {
+			window.clearInterval(tiemoutID);
+		}
+		delayedHonk();
+		clearDelayedHonk();
+
+
+	</script>
+</body>
+</html>

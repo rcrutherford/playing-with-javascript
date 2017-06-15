@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>Ron's Calculator</title>
+	
+</head>
+<body>
+	<script>
+		
+		var calc = prompt('Enter Calculation:', '5 * 2');
+		var items = calc.split('');
+		var validchars = ' +-*/()0123456789';
+		var invalidreg = /[^ \+\-\*\/\(\)0-9]/;
+		var result = 0;
+		var error = false;
+		// for (i=0;i<items.length;i++) {
+		// 	var c = '['+items[i]+']';
+		// 	if (validchars.search(c) < 0 ) {
+		// 		error = true;
+		// 		alert(c + ' is an invalid character!!! @ pos ' + i);
+		// 		i = items.length;
+		// 	}
+		// }
+		if (invalidreg.test(calc)) {
+			error = true;
+			alert(invalidreg.exec(calc) + ' is an invalid character!!!');
+		}
+		if (error == false) {
+			alert('result = ' + eval(calc));	
+		}
+		
+	
+	</script>
+</body>
+</html>
