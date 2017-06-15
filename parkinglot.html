@@ -28,6 +28,7 @@
 			 	console.log('car '+id+ ' is gone!');
 			 	arrSpots[spotid].Empty=true;
 			 	console.log('SPOT '+spotid+ ' is empty!');
+			 	this.SpotID = null;
 			 }
 
 
@@ -52,17 +53,16 @@
 				if (arrSpots[i].Empty == true) {
 					console.log('Spot: '+ i + ' is empty')
 					arrSpots[i].CarID = fnGetACar(i);
-					if (arrSpots[i].CarID == -1) {
-						keepChecking=false;
-						console.log('keepChecking: ' + keepChecking);
+					if (arrSpots[i]) {
+						console.log('spot '+i+' .carid = ' + arrSpots[i].CarID);
+						arrSpots[i].Empty = false;
+						arrCars[arrSpots[i].CarID].Park();
 					}
-					console.log('spot '+i+' .carid = ' + arrSpots[i].CarID);
-					arrSpots[i].Empty = false;
-					arrCars[arrSpots[i].CarID].Park();
 				}
 				
 			}
 		}
+
 		function fnGetACar (spotid) {
 			for (i in arrCars) {
 				if (arrCars[i].Status == 'waiting') {
@@ -72,7 +72,7 @@
 					return arrCars[i].Id;
 					break;
 				}
-				console.log(i + ' '+ arrCars.length);
+				// console.log(i + ' '+ arrCars.length);
 				if (i == arrCars.length-1) {
 					console.log('done');
 					clearInterval(checkit);
@@ -85,8 +85,9 @@
 		function myFunction() {
 			console.log(new Date().toLocaleTimeString()) ;
 		}
+
 		console.log('start');
-		var checkit = setInterval(fnCheckforEmptySpots(),500);
+		var checkit = setInterval(fnCheckforEmptySpots,500);
 		// var z = 0;
 		// while (keepChecking == true) {	
 		// 	z++;
