@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
 	<meta charset="UTF-8">
-	<title>Document</title>
+	<title>Parking Lot</title>
 </head>
 <body>
 	<script type="text/javascript">
@@ -10,12 +10,13 @@
 		var numOfCars = 10;
 		var numOfSpots = 3;
 		var emptySpot = null;
+		var durationMultiplier = 2000
 
 		// cars
 		var arrCars = [];
 		var Car = function(Status, Id, SpotID) {
 			 this.Status = Status; //waiting, parked, gone
-			 this.ParkDuration= Math.round(Math.random() * 5000);
+			 this.ParkDuration= Math.round(Math.random() * durationMultiplier);
 			 this.Id = Id;
 			 this.timeoutID;
 			 this.SpotID = SpotID;
@@ -32,7 +33,7 @@
 			 	arrCars[id].SpotID = null;
 			 }
 		} 
-
+		//populate arrCars with cars
 		for (i=0;i < numOfCars;i++) {
 			arrCars.push(new Car('waiting', i ));
 		}
@@ -45,11 +46,11 @@
 			this.Id = Id;
 			this.CarID = null;
 		}
+		// populate arrSpots with parking spots
 		for (i=0; i < numOfSpots;i++) {
 			arrSpots.push(new Spot(true, i ));
 		}
 		
-
 		function fnCheckforEmptySpots() {
 			console.log('checking for empty spots');
 			for (i in arrSpots) {
@@ -71,9 +72,9 @@
 			var localSpot = arrSpots[spotid];
 			carloop:
 			for (i in arrCars) {
-				console.log('fnParkaCar car '+i+' is '+arrCars[i].Status);
 				switch (arrCars[i].Status) {
 					case 'waiting':
+						console.log('fnParkaCar car '+i+' is '+arrCars[i].Status);
 						var localCar = arrCars[i];
 						localCar.SpotID=spotid;
 						localCar.Park();
@@ -85,24 +86,20 @@
 						break;
 				
 				}
-				
+
 				if (i == arrCars.length-1) {
 					console.log('done');
 					console.dir(arrCars);
 					console.dir(arrSpots);	
 					clearInterval(checkit);
-		
 				}
 			}	
-
 		}
-
-		
 
 		console.log('start');
 		var checkit = setInterval(fnCheckforEmptySpots,500);
-		console.dir(arrCars);
-		console.dir(arrSpots);				
+		// console.dir(arrCars);
+		// console.dir(arrSpots);				
 
 		 
 	</script>

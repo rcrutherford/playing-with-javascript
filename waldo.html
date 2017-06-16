@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>Waldo</title>
+	<script>
+	function getRandomArbitrary(min, max) {
+	    var result = Math.random() * (max - min) + min;
+	    return Math.round(result);
+	}
+
+	function getData() {
+		var waldoState = getRandomArbitrary(1,50);
+		var waldoCity = getRandomArbitrary(1,50);
+		var waldoPos = getRandomArbitrary(1,50);
+
+		var states = [];
+		for(s=1;s<51;s++) { //add cities to the state
+			var state = [];
+			for(c=1;c<51;c++) { //add people to the city
+				var city = [];
+				for(p=1;p<51;p++) { //figure where's waldo
+					if(s == waldoState && c == waldoCity && waldoPos == p) {
+						city.push('Waldo Smith');
+					}
+					else {
+						city.push(p);
+					}
+				}
+				state.push(city);
+			}
+			states.push(state);
+		}
+
+		console.log("Waldo's state: " + (waldoState-1));
+		console.log("Waldo's city: " + (waldoCity-1));
+		console.log("Waldo's address: " + (waldoPos-1));
+		console.dir(states);
+
+		return states;
+	}
+	</script>
+</head>
+<body>
+	<script>
+	function FindWaldo() {
+		var data = getData();
+
+		//do your work here!
+		outerloop:
+		for (i in data) {
+			for (j in data[i]) {
+				for (k in data[i][j]) {
+					if (data[i][j][k] == 'Waldo Smith') {
+						console.log(i + ' ' + j + ' ' + k);
+						break outerloop;
+					}
+				}
+			}
+		}
+
+
+		// for (i in data) {
+		// 	 for (j in i) {
+		// 		for (k in j) {
+		// 			console.log(k);
+		// 			// if (k === 'Waldo Smith') {
+		// 			// 	console.log(i + ' ' + j + ' ' + k);
+		// 			// }
+		// 		}
+		// 	 }
+		// }
+
+	}
+
+	FindWaldo();
+	</script>
+</body>
+</html>

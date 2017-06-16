@@ -6,14 +6,48 @@
 </head>
 <body>
 	<script type="text/javascript">
-		function myFunction() {
-			console.log(new Date().toLocaleTimeString()) ;
+		var numOfCars = 10;
+		var numOfSpots = 3;
+
+		// cars
+		var arrCars = {};
+		for (var i = 0; i < numOfCars; i++) {
+		    var key = oFullResponse.results[i].label;
+	    		columns[key] = {
+		        sortable: true,
+		        resizeable: true
+	    	};
 		}
 
-		console.log('start');
-		var checkit = setInterval(myFunction,1000);
+		
 
-		clearInterval(checkit);
+
+
+		var Car = function(Status, ParkDuration, Id, SpotID) {
+			 this.Status = Status; //waiting, parked, gone
+			 this.ParkDuration= ParkDuration;
+			 this.Id = Id;
+			 this.timeoutID;
+			 this.SpotID = SpotID;
+			 this.Park = function () {
+			 	timeoutID = window.setTimeout(this.unPark, this.ParkDuration, this.Id, this.SpotID);
+			 		console.log('Park funct: car '+ this.Id + ' is parked and timer set for '+this.ParkDuration)
+			 }
+			 this.unPark = function (id,spotid) {
+			 	this.Status = 'gone';
+			 	console.log('-----------------car '+id+ ' is GONE!---------------');
+			 	console.log(this+ this.Status);
+			 	arrSpots[spotid].Empty = true;
+			 	console.log('SPOT '+spotid+ ' is empty!');
+			 	this.SpotID = null;
+			 }
+		} 
+
+		for (i=0;i < numOfCars;i++) {
+			arrCars.push(new Car('waiting',Math.round(Math.random() * 5000), i ));
+		}
+		console.dir(arrCars);
+
 
 	</script>
 </body>
