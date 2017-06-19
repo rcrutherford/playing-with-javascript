@@ -23,14 +23,14 @@
 			 this.Park = function () {
 			 	timeoutID = window.setTimeout(this.Leave, this.ParkDuration, this.Id, this.SpotID);
 			 	this.Status = 'parked';
-			 	console.log('**** Car '+ this.Id + ' is parked in Spot: '+this.SpotID+' and timer set for '+this.ParkDuration);
+			 	console.log('Car '+ this.Id + ' is parked in Spot: '+this.SpotID+' and timer set for '+this.ParkDuration);
 			 }
 			 this.Leave = function (id,spotid) {
-			 	arrCars[id].Status = 'gone';
-			 	console.log('-----------------car '+id+ ' is '+arrCars[id].Status+'!---------------');
+			 	arrCars[id].Status = 'GONE';
+			 	console.log('--------------------------------car '+id+ ' is '+arrCars[id].Status+'!');
 			 	arrSpots[spotid].Empty = true;
 			 	arrSpots[spotid].CarID = null;
-			 	console.log('SPOT '+spotid+ ' is empty!');
+			 	console.log('.............SPOT '+spotid+ ' is empty!');
 			 	arrCars[id].SpotID = null;
 			 }
 		} 
@@ -58,12 +58,12 @@
 				// console.log('fnCheckforEmptySpots empty ' +arrSpots[i].Empty);
 				switch (arrSpots[i].Empty) {
 					case true:
-						console.log('SPOT: '+ i + ' is empty')
+						console.log('.............SPOT: '+ i + ' is empty')
 						emptySpot = i;
 						fnParkaCar(i);
 						break;
 					case false:
-						console.log('SPOT: '+ i + ' is full with car ' + arrSpots[i].CarID);
+						console.log('.............SPOT: '+ i + ' is full with car ' + arrSpots[i].CarID);
 						break;
 				}
 			}
@@ -75,7 +75,7 @@
 			for (i in arrCars) {
 				switch (arrCars[i].Status) {
 					case 'waiting':
-						console.log('**** car '+i+' is '+arrCars[i].Status);
+						console.log('Car '+i+' is '+arrCars[i].Status);
 						var localCar = arrCars[i];
 						localCar.SpotID=spotid;
 						localCar.Park();
@@ -88,7 +88,7 @@
 				}
 				// we parked the last car so clear the interval
 				if (i == arrCars.length-1) {
-					console.log('done');
+					console.log('~~~done~~~');
 					// console.dir(arrCars);
 					// console.dir(arrSpots);	
 					clearInterval(checkit);
@@ -102,10 +102,10 @@
 				// console.log('fnCheckforEmptySpots empty ' +arrSpots[i].Empty);
 				switch (arrSpots[i].Empty) {
 					case true:
-						console.log('SPOT: '+ i + ' is empty')
+						console.log('.............SPOT: '+ i + ' is empty')
 						break;
 					case false:
-						console.log('SPOT: '+ i + ' is full with car ' + arrSpots[i].CarID);
+						console.log('.............SPOT: '+ i + ' is full with car ' + arrSpots[i].CarID);
 						break;
 				}
 			}
