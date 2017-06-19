@@ -1,0 +1,116 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>exercises</title>
+
+</head>
+<body>
+	<script type="">
+
+	// last element
+		var items1 = ['one','two','three','four','five','six','seven'];
+		var items2 = 'A really long string';
+		var items3 = [[1, 2, 3], ['one', 'two'], [true, false, true]];
+
+		console.log(items1[items1.length-1]);
+		console.log(items2.substr(-1,1));
+		var i = items3.length-1;
+		var j = items3[i].length-1;
+		console.log(items3[i][j]);
+	
+		// clock
+		// Today is : Friday
+		// Current time is: 4 PM : 50 : 22
+		var d = new Date();
+		var n = d.getDay();
+		var w = ['Sunday','Monday','Tuesday', 'Wednesday', 'Thrusday','Friday','Saturday'];
+		console.log('Today is : '+w[n]);
+		var h = d.getHours();
+		switch (true) {
+			case (h == 0):
+				h = '12 AM';
+				break;
+			case (h == 12):
+				h = '12 PM'
+			case (h > 12):
+				h = h-12 + ' PM';
+				break;
+			default:
+				h = h + ' AM'
+		}
+		var m = d.getMinutes();
+		var s = d.getSeconds();
+		console.log('Current time is : '+h+' : '+m+' : '+s);
+		
+		// area of triangel 5,6,7
+
+		// Step 1: Calculate "s" (half of the triangles perimeter):	 	s = (a+b+c)/2
+		// Step 2: Then calculate the Area:	 	herons formula A = sqrt( s(s-a)(s-b)(s-c) )
+		var a = 5, b = 6, c= 7;
+		var s = (a+b+c)/2;
+		var A = Math.sqrt(s*(s-a)*(s-b)*(s-c));
+		console.log(A);
+
+		//reverse a number
+		var a = 12345;
+		var d = a.toString();
+		var b = d.split('');
+		var c = '';
+		for (i=b.length-1;i>=0;i--) {
+			c = c + b[i];
+		}
+		console.log(c);
+
+		//Alphabetize a string
+		var a = 'Andrew';
+		var sorta = a.split('');
+		var sorted = sorta.sort();
+		console.log(sorted.join(''));
+
+		//uppercase every word
+		var a = 'javascript is my most favorite language';
+		var b = a.split(' ');
+		for (i in b) {
+			var c = b[i].substr(0,1);
+			var d = c.toUpperCase();
+			b[i]=b[i].replace(c,d);
+		}
+		console.log(b.join(' '));
+
+		//longest word
+		var a = 'A 24 week coding bootcamp is making me nerd out!';
+		var b = a.split(' ');
+		var len = 0;
+		var long = '';
+		for (i in b) {
+			if (b[i].length > len) {
+				len = b[i].length;
+				long =b[i];
+			}
+		}
+		console.log(long);
+
+
+		//convert money to coins
+		var a = [46, [25, 10, 5, 1]];
+		var inputAmt = a[0];
+		var coins = a[1];
+		var output = [];
+		var cTotal = 0;
+		for (i in coins) {
+			while (coins[i] <= (inputAmt - cTotal)) {
+				cTotal = cTotal + coins[i];
+				output.push(coins[i]);
+			}
+		}
+		console.log(output.join());
+
+	</script>
+</body>
+</html>
+
+
+
+
+

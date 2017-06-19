@@ -7,9 +7,9 @@
 <body>
 	<script type="text/javascript">
 
-		var numOfCars = 90;
-		var numOfSpots = 30;
-		var durationMultiplier = 1000;
+		var numOfCars = 50;
+		var numOfSpots = 13;
+		var durationMultiplier = 2000;
 		var emptySpot = null;
 		
 		// cars
@@ -95,6 +95,22 @@
 				}
 			}	
 		}
+
+		function fnShowAllSpots() {
+			console.log('Show all Spots');
+			for (i in arrSpots) {
+				// console.log('fnCheckforEmptySpots empty ' +arrSpots[i].Empty);
+				switch (arrSpots[i].Empty) {
+					case true:
+						console.log('SPOT: '+ i + ' is empty')
+						break;
+					case false:
+						console.log('SPOT: '+ i + ' is full with car ' + arrSpots[i].CarID);
+						break;
+				}
+			}
+		}
+
 
 		console.log('start');
 		var checkit = setInterval(fnCheckforEmptySpots,500);
