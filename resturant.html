@@ -1,0 +1,342 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>Resurant Sim</title>
+	<link rel="stylesheet" href="">
+</head>
+<body>
+
+	<!-- Rules
+	People
+	The number of people waiting to be seated should be at least twice as many as the number of seats in the restaurant
+	The number of people waiting should be configureable
+	The time that a given party stays at the resaurant should be random and from 5 to 25 seconds
+	The floor and ceiling for party stay should be configureable
+	Tables
+	The number of tables should be configureable
+	A table can seat anywhere from a party of 2 to a party of 10
+	A table can only seat 1 party at the table
+	Seating people randomly just because there is a chair available is not acceptable
+	Performance
+	Performance of your program is important this time which means the solution shouldn't use function constructors for object creation!
+	Meaning you can say: var Car = function() { };
+	Instead use: var car = {..., ..., ....}
+	Output
+	The output of your program should outline the following information about the current state of your restaurant each time a party is seated or leaves:
+	How many people waiting in the lobby
+	How many parties waiting in the lobby
+	How many people sitting in the restaurant
+	How many parties waiting in the resaurant
+	How many people have been served by the restaurant (and left)
+	How many parties have been served by the restaurant
+	How many tables are available
+	How many seats are available -->
+
+	<script>
+	'use strict';
+	const NUM_PARTIES = 21;
+	const NUM_TABLES = Math.floor(NUM_PARTIES/2);
+	const MIN_PARTY_SIZE = 1;
+	const MAX_PARTY_SIZE = 10;
+	const DURATION_MULTIPLIER = 2000;
+
+	var names = ['Smith','Johnson','Williams','Jones','Brown','Davis','Miller','Wilson','Moore','Taylor','Anderson','Thomas','Jackson','White','Harris','Martin','Thompson','Garcia','Martinez','Robinson','Clark','Rodriguez','Lewis','Lee','Walker','Hall','Allen','Young','Hernandez','King','Wright','Lopez','Hill','Scott','Green','Adams','Baker','Gonzalez','Nelson','Carter','Mitchell','Perez','Roberts','Turner','Phillips','Campbell','Parker','Evans','Edwards','Collins','Stewart','Sanchez','Morris','Rogers','Reed','Cook','Morgan','Bell','Murphy','Bailey','Rivera','Cooper','Richardson','Cox','Howard','Ward','Torres','Peterson','Gray','Ramirez','James','Watson','Brooks','Kelly','Sanders','Price','Bennett','Wood','Barnes','Ross','Henderson','Coleman','Jenkins','Perry','Powell','Long','Patterson','Hughes','Flores','Washington','Butler','Simmons','Foster','Gonzales','Bryant','Alexander','Russell','Griffin','Diaz','Hayes','Myers','Ford','Hamilton','Graham','Sullivan','Wallace','Woods','Cole','West','Jordan','Owens','Reynolds','Fisher','Ellis','Harrison','Gibson','Mcdonald','Cruz','Marshall','Ortiz','Gomez','Murray','Freeman','Wells','Webb','Simpson','Stevens','Tucker','Porter','Hunter','Hicks','Crawford','Henry','Boyd','Mason','Morales','Kennedy','Warren','Dixon','Ramos','Reyes','Burns','Gordon','Shaw','Holmes','Rice','Robertson','Hunt','Black','Daniels','Palmer','Mills','Nichols','Grant','Knight','Ferguson','Rose','Stone','Hawkins','Dunn','Perkins','Hudson','Spencer','Gardner','Stephens','Payne','Pierce','Berry','Matthews','Arnold','Wagner','Willis','Ray','Watkins','Olson','Carroll','Duncan','Snyder','Hart','Cunningham','Bradley','Lane','Andrews','Ruiz','Harper','Fox','Riley','Armstrong','Carpenter','Weaver','Greene','Lawrence','Elliott','Chavez','Sims','Austin','Peters','Kelley','Franklin','Lawson','Fields','Gutierrez','Ryan','Schmidt','Carr','Vasquez','Castillo','Wheeler','Chapman','Oliver','Montgomery','Richards','Williamson','Johnston','Banks','Meyer','Bishop','Mccoy','Howell','Alvarez','Morrison','Hansen','Fernandez','Garza','Harvey','Little','Burton','Stanley','Nguyen','George','Jacobs','Reid','Kim','Fuller','Lynch','Dean','Gilbert','Garrett','Romero','Welch','Larson','Frazier','Burke','Hanson','Day','Mendoza','Moreno','Bowman','Medina','Fowler','Brewer','Hoffman','Carlson','Silva','Pearson','Holland','Douglas','Fleming','Jensen','Vargas','Byrd','Davidson','Hopkins','May','Terry','Herrera','Wade','Soto','Walters','Curtis','Neal','Caldwell','Lowe','Jennings','Barnett','Graves','Jimenez','Horton','Shelton','Barrett','Castro','Sutton','Gregory','Mckinney','Lucas','Miles','Craig','Rodriquez','Chambers','Holt','Lambert','Fletcher','Watts','Bates','Hale','Rhodes','Pena','Beck','Newman','Haynes','Mcdaniel','Mendez','Bush','Vaughn','Parks','Dawson','Santiago','Norris','Hardy','Love','Steele','Curry','Powers','Schultz','Barker','Guzman','Page','Munoz','Ball','Keller','Chandler','Weber','Leonard','Walsh','Lyons','Ramsey','Wolfe','Schneider','Mullins','Benson','Sharp','Bowen','Daniel','Barber','Cummings','Hines','Baldwin','Griffith','Valdez','Hubbard','Salazar','Reeves','Warner','Stevenson','Burgess','Santos','Tate','Cross','Garner','Mann','Mack','Moss','Thornton','Dennis','Mcgee','Farmer','Delgado','Aguilar','Vega','Glover','Manning','Cohen','Harmon','Rodgers','Robbins','Newton','Todd','Blair','Higgins','Ingram','Reese','Cannon','Strickland','Townsend','Potter','Goodwin','Walton','Rowe','Hampton','Ortega','Patton','Swanson','Joseph','Francis','Goodman','Maldonado','Yates','Becker','Erickson','Hodges','Rios','Conner','Adkins','Webster','Norman','Malone','Hammond','Flowers','Cobb','Moody','Quinn','Blake','Maxwell','Pope','Floyd','Osborne','Paul','Mccarthy','Guerrero','Lindsey','Estrada','Sandoval','Gibbs','Tyler','Gross','Fitzgerald','Stokes','Doyle','Sherman','Saunders','Wise','Colon','Gill','Alvarado','Greer','Padilla','Simon','Waters','Nunez','Ballard','Schwartz','Mcbride','Houston','Christensen','Klein','Pratt','Briggs','Parsons','Mclaughlin','Zimmerman','French','Buchanan','Moran','Copeland','Roy','Pittman','Brady','Mccormick','Holloway','Brock','Poole','Frank','Logan','Owen','Bass','Marsh','Drake','Wong','Jefferson','Park','Morton','Abbott','Sparks','Patrick','Norton','Huff','Clayton','Massey','Lloyd','Figueroa','Carson','Bowers','Roberson','Barton','Tran','Lamb','Harrington','Casey','Boone','Cortez','Clarke','Mathis','Singleton','Wilkins','Cain','Bryan','Underwood','Hogan','Mckenzie','Collier','Luna','Phelps','Mcguire','Allison','Bridges','Wilkerson','Nash','Summers','Atkins']
+
+	var partiesWaiting = [];
+	var partiesSeated = [];
+	var partiesLeft = [];
+	var tables = [];
+	var timerId;
+	var mytimeout;
+	var tablecheckcounter = 0;
+
+	function getRandom(min, max) {
+	    var result = Math.random() * (max - min) + min;
+	    return Math.round(result);
+	}
+
+	function getRandomName() {
+		var randomNameIndex = getRandom(0, names.length-1);
+		var result = names[randomNameIndex];
+		return result; 
+	}
+
+	function makeParties(maxSize){
+		var parties = [];
+		for(var i = 0;i<NUM_PARTIES;i++) {
+			var name = getRandomName();
+			var numinparty = getRandom(MIN_PARTY_SIZE,maxSize);
+			var timeattable = Math.round(Math.random() * DURATION_MULTIPLIER);
+			var party = {'name': name,'numinparty':numinparty, 'timeattable':timeattable, 'table':-1, 'id':i};
+			parties.push(party);
+		}	
+		return parties;
+	}
+
+	function makeTables(){
+		var tables = [];
+		for(var i = 0;i<NUM_TABLES;i++) {
+			var numSeats = getRandom(2,10);
+			var table = {'seats': numSeats, 'occupied':false , 'id':i};
+			tables.push(table);
+		}	
+		return tables;
+	}
+
+	function compareTables(a,b) {
+	  if (a.seats < b.seats)
+	    return 1;
+	  if (a.seats > b.seats)
+	    return -1;
+	  return 0;
+	}
+
+	function compareParties(a,b) {
+	  if (a.numinparty < b.numinparty)
+	    return 1;
+	  if (a.numinparty > b.numinparty)
+	    return -1;
+	  return 0;
+	}
+
+	function partyLeave (partyid, tableindex) {
+		var indexofParties = getPartyIndex(partyid);
+		partiesSeated.splice(partiesSeated.indexOf(partyid),1);
+		partiesLeft.push(Parties[indexofParties].id);
+		Parties[indexofParties].table = -1;
+		Tables[tableindex].occupied=false;
+		console.log(Parties[indexofParties].name+'('+Parties[indexofParties].id+') party of '+Parties[indexofParties].numinparty+' has left and table: '+ Tables[tableindex].id+' is empty');
+		console.log('      parties gone: '+ partiesLeft);
+		console.log('      parties gone: cnt: '+ partiesLeft.length);
+		console.log('      people gone cnt: ' + calcPeople(partiesLeft));
+	}
+
+	function getPartyIndex (id) {
+		for (var k in Parties) {
+			if (Parties[k].id == id) {
+				var indexofParties = k;
+				break;
+			}
+		}
+		return indexofParties;
+	}
+
+	function seatParties (indexofParties, i, j ) {
+		console.log(Parties[indexofParties].name+'(id:'+Parties[indexofParties].id+') party of '+Parties[indexofParties].numinparty+' @ table: '+ Tables[i].id+ ' for '+Parties[indexofParties].timeattable);
+							
+		var seatThisPartyID = Parties[indexofParties].id;
+		partiesSeated.push(seatThisPartyID);
+		Tables[i].occupied = true;
+		Parties[indexofParties].table = Tables[i].id;
+		mytimeout = setTimeout(partyLeave ,Parties[indexofParties].timeattable,seatThisPartyID, i );
+		partiesWaiting.splice(j,1);
+
+		console.log('   parties seated: '+ partiesSeated);
+		console.log('   parties seated: cnt: '+ partiesSeated.length);
+		console.log('   people seated cnt: ' + calcPeople(partiesSeated));
+	}
+
+	function calcPeople (partyarray) {
+		var peopleCnt = 0;
+		var index;
+		for (var i in partyarray) {
+			index = getPartyIndex(i);
+			peopleCnt = peopleCnt + Parties[index].numinparty;
+		}	
+		return peopleCnt;
+	}
+	
+	function availTablesAndSeats () {
+		var tableCnt = 0;
+		var seatCnt = 0;
+		var totalSeats = 0;
+		for (var i in Tables) {
+			totalSeats= totalSeats + Tables[i].Seats;
+			if (Tables[i].occupied == false) {
+				tableCnt++;
+				seatCnt = seatCnt + Tables[i].Seats;
+			}
+		}
+		console.log('tableCnt '+tableCnt+' seatCnt '+seatCnt+' totalSeats '+totalSeats);
+		return {'tableCnt':tableCnt,'seatCnt':seatCnt,'totalSeats':totalSeats};
+	}
+
+	function checkTables () {
+		checkTablesLoop: {
+			if (partiesWaiting.length == 0 & partiesSeated.length == 0) {
+				clearInterval(timerId);
+				break checkTablesLoop;
+			}
+			var objTablesSeats = availTablesAndSeats();
+			console.log('Available tables: '+objTablesSeats.tableCnt+' of '+Tables.length);
+			console.log('Available seats: '+objTablesSeats.seatCnt+' of '+objTablesSeats.totalSeats);
+
+			for (var i in Tables) {
+				
+				if (Tables[i].occupied == false) {
+					var seats = Tables[i].seats;
+					var smallestParty = seats-2;
+
+					console.log('Table: ' +Tables[i].id+' seats '+Tables[i].seats)
+					
+					//get a party with at least seats-2 people
+					forpartiesWaiting: for (var j in partiesWaiting) {
+						// get the index of this party
+						forParties:	for (var k in Parties) {
+							if (Parties[k].id == partiesWaiting[j]) {
+								var indexofParties = k;
+								break forParties;
+							}
+						}
+						if (partiesSeated.length == 0 & partiesWaiting.length > 0) {
+							tablecheckcounter++;
+							if (tablecheckcounter > 2) {
+								smallestParty--;
+							}
+						}
+						if (Parties[indexofParties].numinparty >= smallestParty & Parties[indexofParties].numinparty <= seats) {
+							seatParties(indexofParties, i, j );
+							break forpartiesWaiting;
+						}
+					}
+					
+					console.log('parties waiting: '+partiesWaiting);
+					console.log('parties waiting cnt: '+partiesWaiting.length);
+					console.log('people waiting cnt: ' + calcPeople(partiesWaiting));
+					
+				}
+			}
+		}
+	}
+
+	var Tables = makeTables();
+	Tables.sort(compareTables);
+	var actualMaxPartySize = Tables[0].seats;
+
+	var Parties = makeParties(actualMaxPartySize);
+		
+	Parties.sort(compareParties);
+
+	// push parties into partiesWaiting array
+	for (var i in Parties) {
+		partiesWaiting.push(Parties[i].id);
+	}
+	
+	console.log(Parties);
+	console.log(Tables);
+	
+	
+
+	timerId = setInterval(checkTables, 250);
+
+	console.log(partiesWaiting);
+	console.log(partiesSeated);
+
+
+
+
+	// var Car = function(color, make, model, plateNumber, timeSpentInLot) {
+	// 	this.Color = color;
+	// 	this.Make = make;
+	// 	this.Model = model;
+	// 	this.PlateNumber = plateNumber;
+	// 	this.TimeSpentInLot = timeSpentInLot;
+
+	// 	this.Park = function(){
+	// 		console.log('A ' + this.Color + ' ' + this.Make + ' ' + this.Model + ' has parked!')
+
+	// 		setTimeout(this.Leave, this.TimeSpentInLot, this);
+	// 	}
+
+	// 	this.Leave = function(car) {
+	// 		for(var i = 0;i<carsParked.length;i++)
+	// 		{
+	// 			if(carsParked[i].PlateNumber == car.PlateNumber) {
+	// 				carsLeft.push(carsParked[i]);
+	// 				carsParked.splice(i, 1);
+	// 				console.log('A ' + car.Color + ' ' + car.Make + ' ' + car.Model + ' left the parking lot!');
+	// 				break;
+	// 			}
+	// 		}
+	// 	}
+	// }
+
+	// function carFactory(){
+	// 	var result = [];
+	// 	for(var i = 0; i< NUMBER_OF_CARS;i++){
+	// 		result.push(getRandomCar(i));
+	// 	}
+	// 	return result;
+	// }
+
+	// function getRandomCar(plateNumber) {
+	// 	var randomMake = getRandomMake();
+	// 	var randomModel = getRandomModel(randomMake);
+	// 	var randomColor = getRandomColor();
+	// 	var randomTimeSpentInLot = getRandom(1000, 20*1000);
+	// 	var car = new Car(randomColor, 
+	// 		randomMake, 
+	// 		randomModel, 
+	// 		plateNumber,
+	// 		randomTimeSpentInLot);
+
+	// 	return car;
+	// }
+
+	// function getRandomColor() {
+	// 	var randomColorIndex = getRandom(0, colors.length-1);
+	// 	var result = colors[randomColorIndex];
+	// 	return result; 
+	// }
+
+	// function getRandomMake() {
+	// 	var randomMakeIndex = getRandom(0, makes_models.length-1);
+	// 	var randomMake = makes_models[randomMakeIndex][0];
+	// 	return randomMake;
+	// }
+
+	// function getRandomModel(make){
+	// 	var makeIndex; 
+
+	// 	for(var i = 0;i<makes_models.length;i++){
+	// 		if(makes_models[i][0]==make) {
+	// 			makeIndex = i;
+	// 		}
+	// 	}
+
+	// 	var randomModelIndex = getRandom(1, makes_models[makeIndex].length-1);
+	// 	var modelResult = makes_models[makeIndex][randomModelIndex];
+
+	// 	return modelResult;
+	// }
+
+
+	
+
+	// function parkCars(){
+
+	// 	var spacesAvailable = SPACES_IN_PARKING_LOT - carsParked.length;
+
+	// 	for(var i = 0;i<spacesAvailable;i++){
+	// 		if(carsWaitingToPark.length>0){
+	// 			var car = carsWaitingToPark.shift();
+	// 			car.Park();
+	// 			carsParked.push(car);
+	// 		}
+	// 		else {
+	// 			console.log('All cars have been parked, stop trying to park cars.');
+	// 			clearTimeout(timerId); //kills interval timer
+	// 		}
+	// 	}
+
+	// 	spacesAvailable = SPACES_IN_PARKING_LOT - carsParked.length;
+	// }
+
+	// carsWaitingToPark = carFactory();
+	// timerId = setInterval(parkCars, 250);
+
+	
+	</script>
+</body>
+</html>
