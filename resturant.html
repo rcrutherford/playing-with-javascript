@@ -251,7 +251,7 @@
 			if (Tables[i].occupied == false && Tables[i].seats >= partySize) {
 				var partyWaitingIndex = partiesWaiting.indexOf(PartyId);
 				var tableIndex = i;
-				console.error('******emergencySeatParty: '+Parties[partyIndex].name+' ('+ PartyId+') party of: '+partySize+' waiting for: '+waitingfor + ' @ table: '+Tables[i].id+' seats: '+Tables[i].seats+'*******')
+				console.error('******emergencySeatParty: '+Parties[partyIndex].name+' ('+ PartyId+') party of: '+partySize+' waiting for: '+waitingfor + ' @ table: '+Tables[i].id+' seats: '+Tables[i].seats+'*******');
 				seatParties(partyIndex, tableIndex, partyWaitingIndex );
 				break;
 				
