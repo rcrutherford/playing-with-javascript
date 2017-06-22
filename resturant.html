@@ -35,7 +35,7 @@
 
 	<script>
 	'use strict';
-	const NUM_PARTIES = 21;
+	const NUM_PARTIES = 31;
 	const NUM_TABLES = Math.floor(NUM_PARTIES/2);
 	const MIN_PARTY_SIZE = 1;
 	const MAX_PARTY_SIZE = 10;
@@ -129,7 +129,7 @@
 	}
 
 	function seatParties (indexofParties, i, j ) {
-		console.log(Parties[indexofParties].name+'(id:'+Parties[indexofParties].id+') party of '+Parties[indexofParties].numinparty+' @ table: '+ Tables[i].id+ ' for '+Parties[indexofParties].timeattable);
+		console.log(Parties[indexofParties].name+'(id:'+Parties[indexofParties].id+') party of '+Parties[indexofParties].numinparty+' @ table: '+ Tables[i].id+ ' seats: '+Tables[i].seats+' for '+Parties[indexofParties].timeattable+' ms.');
 							
 		var seatThisPartyID = Parties[indexofParties].id;
 		partiesSeated.push(seatThisPartyID);
@@ -216,8 +216,9 @@
 								break forParties;
 							}
 						}
-						if (Date.now() - Parties[indexofParties].starttime > MAX_WAIT) {
-							emergencySeatParty(partiesWaiting[j]);
+						var waitingfor = Date.now() - Parties[indexofParties].starttime;
+						if (waitingfor > MAX_WAIT) {
+							emergencySeatParty(partiesWaiting[j], waitingfor);
 						}
 						if (partiesSeated.length == 0 && partiesWaiting.length > 0) {
 							tablecheckcounter++;
@@ -241,7 +242,7 @@
 		}
 	}
 
-	function emergencySeatParty (PartyId) {
+	function emergencySeatParty (PartyId, waitingfor) {
 		//this party has been waiting more than the configured wait time.
 		// seat them immediately at the smallest table that will hold them
 		var partyIndex = getPartyIndex(PartyId);
@@ -250,8 +251,10 @@
 			if (Tables[i].occupied == false && Tables[i].seats >= partySize) {
 				var partyWaitingIndex = partiesWaiting.indexOf(PartyId);
 				var tableIndex = i;
+				console.error('******emergencySeatParty: '+Parties[partyIndex].name+' ('+ PartyId+') party of: '+partySize+' waiting for: '+waitingfor + ' @ table: '+Tables[i].id+' seats: '+Tables[i].seats+'*******')
 				seatParties(partyIndex, tableIndex, partyWaitingIndex );
-				console.error('******emergencySeatParty: '+PartyId+'*******')
+				break;
+				
 			}
 		}
 	}
