@@ -219,6 +219,7 @@
 						var waitingfor = Date.now() - Parties[indexofParties].starttime;
 						if (waitingfor > MAX_WAIT) {
 							emergencySeatParty(partiesWaiting[j], waitingfor);
+							break forpartiesWaiting;
 						}
 						if (partiesSeated.length == 0 && partiesWaiting.length > 0) {
 							tablecheckcounter++;
