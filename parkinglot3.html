@@ -8,9 +8,10 @@
 
 	<script type="text/javascript">
 		"use strict";
-		const NUM_CARS = 20;
+		const NUM_CARS = 40;
 		const NUM_SPACES = 11;
-		const DURATION_MULTIPLIER = 2000;
+		const DURATION_MULTIPLIER = 3000
+		const RUN_INTERVAL = 500;
 
 		var makeModel = [
 			['FORD',
@@ -64,6 +65,8 @@
 		var carsWaiting = [];
 		var carsParked = [];
 		var carsGone =[];
+		var timerID ;
+		var parkingTimeout;
 
 		function getRandom(min, max) {
 		    var result = Math.random() * (max - min) + min;
@@ -94,6 +97,8 @@
 
 		function makeCars() {
 			var cars = [];
+			// var alpha = 'abcdefghijklmnopqrstuvwxyz';
+			// var arrAlpha = alpha.split('');
 			for (var i = 0; i<NUM_CARS;i++) {
 				var parkDuration = Math.round(Math.random() * DURATION_MULTIPLIER);
 				var color = getRandomColor();
@@ -125,12 +130,25 @@
 			return spaces;
 		}
 
+		function iif (expression, trueval, falseval) {
+			if (eval(expression)) {
+				return trueval;
+			}
+			else {
+				return falseval;
+			}
+		}
+
 		function parkCar(carId,spaceId) {
-			Cars[carId].spaceId=spaceId;
+			var carIndex =getArrayIdIndex(Cars,carId);
+			Cars[carIndex].spaceNumber=spaceId;
 			Spaces[spaceId].occupied=true;
 			carsParked.push(carId);
-			carsWaiting.shift(carId);
-			console.log('car: '+carId+' parked in space '+spaceId);
+
+			carsWaiting.splice(carsWaiting.indexOf(carId),1);
+			// console.log('carsWaiting after splice '+carsWaiting);
+			parkingTimeout = setTimeout(carLeave ,Cars[carIndex].parkDuration, carId );
+			console.log('car: '+carId+'('+iif(Cars[carIndex].compact,'compact','FULLSIZE')+') parked in space '+spaceId+' ('+iif(Spaces[spaceId].compactonly,'compact','FULLSIZE')+') for '+Cars[carIndex].parkDuration);
 		}
 
 		function getEmptySpace(compact) {
@@ -140,50 +158,77 @@
 				}
 				i = null;
 			}
-			return i;
+			if (i) {
+				return Spaces[i].id;
+			}
+			else {
+				return -1; 
+			}
+		}
+
+		function carLeave (carId) {
+			// console.log('carsParked at start of leave: '+carsParked);
+			for (var i in carsParked) {
+				// console.log('i '+i+' carsWaiting[i] '+carsWaiting[i]);
+				if (carsParked[i] == carId) {
+					break;
+				}
+			}
+			var carIndex = getArrayIdIndex(Cars,carId);
+			var spaceId = Cars[carIndex].spaceNumber;
+			 // console.log('spaceId: '+spaceId+' carId:'+carId);
+			Cars[carIndex].spaceNumber = null;
+			Spaces[spaceId].occupied = false;
+			carsGone.push(carId);
+			carsParked.splice(i,1);
+			console.log('car: '+carId+' is GONE from '+spaceId);
+			if (carsWaiting.length + carsParked.length == 0) {
+				console.log('carsWaiting: '+carsWaiting);
+				console.log('carsParked: '+carsParked);
+				console.log('carsGone: '+carsGone);
+			}
 		}
 
 		function checkForcarsWaiting () {
-			for (var i in carsWaiting) {
-				var space=getEmptySpace(Cars[i].compact);
-				if (space) {
-					parkCar(i,space);
+			console.log('carsWaiting: '+carsWaiting);
+			console.log('carsParked: '+carsParked);
+			console.log('carsGone: '+carsGone);
+			if (carsWaiting.length == 0) {
+				clearInterval(timerID);
+			}
+			var i = 0;
+			while (carsWaiting.length > 0) {
+				// console.log('carsWaiting[i]: '+carsWaiting[i]);
+				var carIndex = getArrayIdIndex(Cars,carsWaiting[i]);
+				// console.log('carIndex: '+carIndex);
+				var space=getEmptySpace(Cars[carIndex].compact);
+				// console.log('space: '+space);
+				if (space >= 0) {
+					parkCar(carsWaiting[i],space);
+				}
+				else { 
+					i++
+					break;
 				}
 			}
 		}
 
+		function getArrayIdIndex (arrayname,value) {
+			var index=-1;
+			var index = arrayname.findIndex(item => item.id === value);
+			 // console.log(arrayname+' '+field+' '+value+' '+index)
+			return index;
+		}
+
 		var Cars = makeCars();
 		console.log(Cars);
-		console.log('carsWaiting: '+carsWaiting);
+		// console.log('carsWaiting: '+carsWaiting);
 		var Spaces = makeSpaces();
 		console.log(Spaces);
-		checkForcarsWaiting();
-		console.log('carsWaiting: '+carsWaiting);
-		console.log('carsParked: '+carsParked);
-		// function makeParties(maxSize){
-		// 	var parties = [];
-		// 	var totalpeople = 0;
-		// 	for(var i = 0;i<NUM_PARTIES;i++) {
-		// 		var name = getRandomName();
-		// 		var numinparty = getRandom(MIN_PARTY_SIZE,maxSize);
-		// 		totalpeople = totalpeople + numinparty;
-		// 		var timeattable = Math.round(Math.random() * DURATION_MULTIPLIER);
-		// 		var party = {'name': name,'numinparty':numinparty, 'timeattable':timeattable, 'table':-1, 'starttime':Date.now(),'id':i};
-		// 		parties.push(party);
-		// 	}	
-		// 	console.log('Parties waiting: '+parties.length+' People waiting: '+totalpeople);
-		// 	return parties;
-		// }
-
-		// function makeTables(){
-		// 	var tables = [];
-		// 	for(var i = 0;i<NUM_TABLES;i++) {
-		// 		var numSeats = getRandom(2,10);
-		// 		var table = {'seats': numSeats, 'occupied':false , 'id':i};
-		// 		tables.push(table);
-		// 	}	
-		// 	return tables;
-		// }
+		timerID = setInterval(checkForcarsWaiting,RUN_INTERVAL);
+		// console.log('carsWaiting: '+carsWaiting);
+		// console.log('carsParked: '+carsParked);
+		
 	</script>
 </body>
 </html>
