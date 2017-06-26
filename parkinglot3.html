@@ -208,7 +208,10 @@
 				}
 				else { 
 					i++;
-					break;
+					if (i>carsWaiting.length-1) {
+						break;
+					}
+					// break:
 				}
 			}
 		}
