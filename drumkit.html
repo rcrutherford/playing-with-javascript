@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>Document</title>
+	<style type="text/css">
+		.keys {
+			display:flex;
+			justify-content: space-around;
+			align-items: center;
+			height:100vh;
+		}
+		.key {
+			width: 50px;
+			height: 50px;
+			border: solid 2px black;
+			
+			/* center the text */
+			display:flex;
+			justify-content: center;
+			align-items: center;
+
+			/* the magic */
+			transition: all 0.07s;
+		}
+
+		.big-key {
+			transform:scale(2) rotate(90deg);
+			border-color:red;
+			box-shadow: 0 0 10px #ff0000;
+			border-radius: 25px;
+		}
+	</style>
+</head>
+<body>
+	<div class="keys">
+		<div class="key" data-key="65">a</div>
+		<div class="key" data-key="83">s</div>
+		<div class="key" data-key="68">d</div>
+		<div class="key" data-key="70">f</div>
+		<div class="key" data-key="71">g</div>
+		<div class="key" data-key="72">h</div>
+		<div class="key" data-key="74">j</div>
+		<div class="key" data-key="75">k</div>
+		<div class="key" data-key="76">l</div>
+		<div class="key" data-key="186">;</div>
+
+		<audio data-key="65" src="sounds/03-drum.wav" />
+		<audio data-key="83" src="sounds/15-rattle.wav" />
+		<audio data-key="68" src="sounds/18-pong.wav" />
+		<audio data-key="70" src="sounds/20-stick.wav" />
+		<audio data-key="71" src="sounds/13-pan.wav" />
+		<audio data-key="72" src="sounds/14-kick.wav" />
+		<audio data-key="74" src="sounds/01-drum.wav" />
+		<audio data-key="75" src="sounds/12-shaker.wav" />
+		<audio data-key="76" src="sounds/16-snare.wav" />
+		<audio data-key="186" src="sounds/19-hat.wav" />
+	</div>
+	<script type="text/javascript">
+		window.onkeydown = function(e) {
+			var key = document.querySelector(`div[data-key="${e.keyCode}"]`);
+			var audio = document.querySelector(`audio[data-key="${e.keyCode}"]`);
+
+			if(!key) return; //no key defined!
+
+			audio.currentTime = 0;
+			audio.play();
+			key.classList.add('big-key');
+		}
+
+		function removeTransition(e) {
+			console.dir(e);
+			if(e.propertyName != 'transform') return;
+			e.srcElement.classList.remove('big-key');
+		}
+
+		const keys = document.querySelectorAll('.key');
+		keys.forEach(k => k.addEventListener('transitionend', removeTransition));
+	</script>
+</body>
+</html>

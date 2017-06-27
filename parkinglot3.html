@@ -9,7 +9,7 @@
 	<script type="text/javascript">
 		"use strict";
 		const NUM_CARS = 40;
-		const NUM_SPACES = 11;
+		const NUM_SPACES = 17;
 		const DURATION_MULTIPLIER = 3000
 		const RUN_INTERVAL = 500;
 
@@ -148,7 +148,12 @@
 			carsWaiting.splice(carsWaiting.indexOf(carId),1);
 			// console.log('carsWaiting after splice '+carsWaiting);
 			parkingTimeout = setTimeout(carLeave ,Cars[carIndex].parkDuration, carId );
-			console.log('car: '+carId+'('+iif(Cars[carIndex].compact,'compact','FULLSIZE')+') parked in space '+spaceId+' ('+iif(Spaces[spaceId].compactonly,'compact','FULLSIZE')+') for '+Cars[carIndex].parkDuration);
+			if (Cars[carIndex].compact && Spaces[spaceId].compactonly == false) {
+				console.warn('car: '+carId+'('+iif(Cars[carIndex].compact,'compact','FULLSIZE')+') parked in space '+spaceId+' ('+iif(Spaces[spaceId].compactonly,'compact','FULLSIZE')+') for '+Cars[carIndex].parkDuration);	
+			}
+			else {
+				console.log('car: '+carId+'('+iif(Cars[carIndex].compact,'compact','FULLSIZE')+') parked in space '+spaceId+' ('+iif(Spaces[spaceId].compactonly,'compact','FULLSIZE')+') for '+Cars[carIndex].parkDuration);
+			}
 		}
 
 		function getEmptySpace(compact) {
@@ -200,7 +205,7 @@
 			while (carsWaiting.length > 0) {
 				// console.log('carsWaiting[i]: '+carsWaiting[i]);
 				var carIndex = getArrayIdIndex(Cars,carsWaiting[i]);
-				// console.log('carIndex: '+carIndex);
+				if (carIndex >= 0) {} else {console.error('carIndex: '+carIndex);}
 				var space=getEmptySpace(Cars[carIndex].compact);
 				// console.log('space: '+space);
 				if (space >= 0) {
