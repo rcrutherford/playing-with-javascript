@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>Document</title>
+	<link rel="stylesheet" type="text/css" href="animate.css">
+	<style type="text/css">
+		.container {
+			display:flex;
+			height: 100vh;
+			justify-content: center;
+			align-items:center;
+		}
+		#pizza-man {
+	
+		}
+	</style>
+</head>
+<body>
+	<input type="button" value="Bounce" onclick="doAction('bounce')" />
+	<input type="button" value="Flash" onclick="doAction('flash')" />
+	<input type="button" value="Shake" onclick="doAction('shake')" />
+
+	<input type="button" value="Rubber Band" onclick="doAction('rubberBand')" />
+	<input type="button" value="Swing" onclick="doAction('swing')" />
+	<input type="button" value="Tada" onclick="doAction('tada')" />
+	<input type="button" value="Wobble" onclick="doAction('wobble')" />
+	<input type="button" value="Jello" onclick="doAction('jello')" />
+	<input type="button" value="Bounce In" onclick="doAction('bounceIn')" />
+	<input type="button" value="Bounce Out" onclick="doAction('bounceOut')" />
+	<input type="button" value="Fade In" onclick="doAction('fadeIn')" />
+	<input type="button" value="Fade In Down Big" onclick="doAction('fadeInDownBig')" />
+	<input type="button" value="Flip In X" onclick="doAction('flipInX')" />
+	<input type="button" value="Light Speed In" onclick="doAction('lightSpeedIn')" />
+	<input type="button" value="Rotate Out" onclick="doAction('rotateOut')" />
+	<input type="button" value="Jack In The Box" onclick="doAction('jackInTheBox')" />
+	<input type="button" value="Zoom Out Up" onclick="doAction('zoomOutUp')" />
+	<input type="button" value="Slide In Up" onclick="doAction('slideInUp')" />
+	<input type="button" value="Slide Out Right" onclick="doAction('slideOutRight')" />
+	<input type="button" value="Hinge" onclick="doAction('hinge')" />
+
+	<div class="container">
+		<img id="pizza-man" class="animated" src="pizza-kitchen/pizza-man-right.gif" />
+	</div>
+	
+<script type="text/javascript">
+let p = document.getElementById("pizza-man");
+
+function doAction(action) {
+	p.classList.toggle(action);
+}
+
+function listener(e) {
+	switch(e.type) {
+		case "animationstart":
+		console.log('start');
+		  break;
+
+		case "animationend":
+		  console.log('end');
+		  p.classList.value = 'animated';
+		  break;
+
+		case "animationiteration":
+		  console.log(`new loop started after ${e.elapsedTime} seconds`);
+		  break;
+	}
+}
+p.addEventListener("animationstart",listener, false);
+p.addEventListener("animationend",listener, false);
+p.addEventListener("animationiteration",listener, false);
+</script>
+</body>
+</html>

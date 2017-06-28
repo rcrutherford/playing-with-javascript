@@ -1,0 +1,128 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Document</title>
+  <style type="text/css">
+    .row {
+      display: flex;
+      flex-wrap: nowrap;
+    }
+    .cell {
+      display: flex;
+      background: white;
+      outline:1px solid red;
+      flex: 1 1 20%;
+      min-width: 150px;
+      min-height: 150px;
+      position: relative;
+      justify-content: center;
+    }
+    .cell #pickuptableimg {
+      align-self: flex-end;
+      max-width:100%;
+      max-height:50%;
+      position: absolute;
+      bottom: 0;
+    }
+    .cell #computeronpickuptableimg {
+      max-width:100%;
+      max-height:25%;
+      position: absolute;
+      bottom:65px;
+      right: 65px;
+    }
+
+    .cell #ovenimg {
+      align-self: flex-end;
+      max-width:100%;
+      max-height:50%;
+      position: absolute;
+      bottom: 0;
+    }
+     .cell #freezerimg {
+      align-self: flex-end;
+      max-width:100%;
+      max-height:100%;
+      position: absolute;
+      bottom: 0;
+    }
+    .cell #ordertableimg {
+      align-self: flex-end;
+      max-width:100%;
+      max-height:50%;
+      position: absolute;
+      bottom: 0;
+    }
+    .cell #computertableimg {
+      align-self: flex-end;
+      max-width:100%;
+      max-height:70%;
+      position: absolute;
+      bottom: 0;
+    }
+    .cell #computeroncomputertableimg {
+      align-self: flex-start;
+      max-width:100%;
+      max-height:50%;
+      position: absolute;
+      top: 25;
+    }
+
+    .cell #customerlineimg {
+      max-width:100%;
+      max-height:80%;
+      position: absolute;
+      bottom: 0;
+      right: 0;
+    }
+  </style>
+</head>
+<body>
+  <!-- top row of 6  -->
+  <div class="row">
+    <div id="pickupline" class="cell">
+      
+    </div>
+    <div id="pickuptable" class="cell">
+      <img id="pickuptableimg" src="pizza-kitchen/table.png">
+      <img id="computeronpickuptableimg" src="pizza-kitchen/computer-left.png">
+    </div>
+    <div id="cook3move" class="cell">
+      
+    </div>
+    <div id="oven" class="cell">
+      <img id="ovenimg" src="pizza-kitchen/oven-closed.jpg">
+    </div>
+    <div id="cook2move" class="cell">
+      
+    </div>
+    <div id="freezer" class="cell">
+       <img id="freezerimg" src="pizza-kitchen/freezer-closed.jpg">
+    </div>
+  </div>
+
+  <div class="row">
+    <div id="HUD" class="cell"></div>
+  </div>
+
+  <div class="row">
+    <div id="customerline" class="cell">
+      <img id="customerlineimg" src="pizza-kitchen/person-dad.png">
+    </div>
+    <div id="ordertable" class="cell">
+      <img id="ordertableimg" src="pizza-kitchen/table.png">
+      
+    </div>
+    <div id="cook1move" class="cell">
+      
+    </div>
+    <div id="computertable" class="cell">
+      <img id="computertableimg" src="pizza-kitchen/table.png">
+      <img id="computeroncomputertableimg" src="pizza-kitchen/computer-right.png">
+    </div>
+  </div>
+
+</body>
+</html>
