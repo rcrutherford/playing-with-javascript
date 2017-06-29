@@ -37,7 +37,7 @@
 </head>
 <body>
 	<div style="height:230px;">
-		<img id="pizza-man" class="running" src="pizza-kitchen/pizza-man-right.gif" />
+		<img id="pizza-man" class="running" src="images/pizza-man-right.gif" />
 	</div>
 	<input type="button" id="pause" value="Pause Chef" />
 <script type="text/javascript">
@@ -61,10 +61,10 @@ function listener(e) {
 
 		case "animationiteration":
 			if(p.attributes["src"].nodeValue.indexOf('right') > 0) {
-				p.attributes['src'].nodeValue = "pizza-kitchen/pizza-man-left.gif";
+				p.attributes['src'].nodeValue = "images/pizza-man-left.gif";
 			}
 			else {
-				p.attributes['src'].nodeValue = "pizza-kitchen/pizza-man-right.gif"
+				p.attributes['src'].nodeValue = "images/pizza-man-right.gif"
 			}
 		  console.log(`new loop started after ${e.elapsedTime} seconds`);
 		  break;
