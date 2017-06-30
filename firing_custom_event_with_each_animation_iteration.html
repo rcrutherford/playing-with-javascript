@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>Document</title>
+	<style type="text/css">
+		@keyframes walk {
+			from {
+				top: 10px;
+				left: 10px;
+			}
+
+			to {
+				top: 10px;
+				left: 800px;
+			}
+		}
+
+		#pizza-man {
+			top:10px;
+			left:10px;
+			position: absolute;
+			animation-name: walk;
+			animation-duration:3s;
+			animation-iteration-count: infinite;
+			animation-direction: alternate;
+			animation-timing-function: ease-in-out;
+		}
+
+		.paused{
+		    -webkit-animation-play-state:paused;
+		    -moz-animation-play-state:paused;
+		    -o-animation-play-state:paused; 
+		    animation-play-state:paused;
+		}
+	</style>
+</head>
+<body>
+	<div style="height:230px;">
+		<img id="pizza-man" class="running" src="pizza-man-right.gif" />
+	</div>
+	<input type="button" id="pause" value="Pause Chef" />
+
+<script type="text/javascript">
+
+	let p = document.getElementById("pizza-man");
+	let b = document.getElementById("pause");
+
+	function SayHi(e) {
+		alert('hi ron from the pizza man!');
+	}
+
+	function toggleChef(e) {
+		p.classList.toggle('paused');
+	}
+
+	function listener(e) {
+		console.dir(e);
+		switch(e.type) {
+			case "animationstart":
+			console.log('start');
+			  break;
+
+			case "animationend":
+			  console.log('end');
+			  break;
+
+			case "animationiteration":
+				if(p.attributes["src"].nodeValue.indexOf('right') > 0) {
+					p.attributes['src'].nodeValue = "pizza-man-left.gif";
+				}
+				else {
+					p.attributes['src'].nodeValue = "pizza-man-right.gif"
+				}
+
+				let pizzaMan = document.getElementById('pizza-man');
+				let event = new Event('hi-pizza-man');
+				event.pizzaOrderId = 1;
+				p.dispatchEvent(event);
+
+			  console.log(`new loop started after ${e.elapsedTime} seconds`);
+			  break;
+		}
+	}
+	p.addEventListener("animationstart",listener, false);
+	p.addEventListener("animationend",listener, false);
+	p.addEventListener("animationiteration",listener, false);
+	p.addEventListener("hi-pizza-man", SayHi);
+	b.addEventListener("click", toggleChef, false);
+
+	toggleChef();
+	setTimeout(toggleChef, 2000);
+</script>
+</body>
+</html>

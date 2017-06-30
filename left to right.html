@@ -19,6 +19,9 @@
 		}
 	</style>
 	<script type="text/javascript">
+		var myTimeout = setTimeout(MoveRedBox,2000);
+		// window.onload = MoveRedBox;
+
 		function MoveRedBox() {
 			let container = document.getElementById('container');
 			let item = document.getElementById('item');
@@ -51,9 +54,9 @@
 	<div id="container" class="container">
 		<div id="item" class="item"></div>
 	</div>
-	<script type="text/javascript">
+	<!-- <script type="text/javascript">
 		document.getElementById('btn').onclick = MoveRedBox;
-	</script>
+	</script> -->
 </body>
 </html>
 
