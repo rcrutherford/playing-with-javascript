@@ -37,7 +37,7 @@
 </head>
 <body>
 	<div style="height:230px;">
-		<img id="pizza-man" class="running" src="pizza-man-right.gif" />
+		<img id="pizza-man" class="running" src="images/pizza-man-right.gif" />
 	</div>
 	<input type="button" id="pause" value="Pause Chef" />
 
@@ -47,7 +47,7 @@
 	let b = document.getElementById("pause");
 
 	function SayHi(e) {
-		alert('hi ron from the pizza man!');
+		alert('hi ron from the pizza man!'+e.pizzaOrderId);
 	}
 
 	function toggleChef(e) {
@@ -67,10 +67,10 @@
 
 			case "animationiteration":
 				if(p.attributes["src"].nodeValue.indexOf('right') > 0) {
-					p.attributes['src'].nodeValue = "pizza-man-left.gif";
+					p.attributes['src'].nodeValue = "images/pizza-man-left.gif";
 				}
 				else {
-					p.attributes['src'].nodeValue = "pizza-man-right.gif"
+					p.attributes['src'].nodeValue = "images/pizza-man-right.gif"
 				}
 
 				let event = new Event('hi-pizza-man');
@@ -86,6 +86,8 @@
 	p.addEventListener("animationiteration",listener, false);
 	p.addEventListener("hi-pizza-man", SayHi);
 	b.addEventListener("click", toggleChef, false);
+
+
 
 	toggleChef();
 	setTimeout(toggleChef, 2000);
